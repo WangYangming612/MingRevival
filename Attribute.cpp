@@ -4,6 +4,9 @@
 Attribute::Attribute(double initValue, double min, double max)
     : m_value(initValue), m_min(min), m_max(max)
 {
+    // 确保初始值在范围内
+    if (m_value < m_min) m_value = m_min;
+    if (m_value > m_max) m_value = m_max;
 }
 
 // 基类虚析构函数
@@ -36,6 +39,9 @@ double Attribute::getValue() const
 void Attribute::setValue(double value)
 {
     m_value = value;
+    // 自动限制边界
+    if (m_value < m_min) m_value = m_min;
+    if (m_value > m_max) m_value = m_max;
 }
 
 double Attribute::getMin() const
@@ -46,6 +52,25 @@ double Attribute::getMin() const
 double Attribute::getMax() const
 {
     return m_max;
+}
+
+// ✅ 修复：添加派生类构造函数实现
+// 派生类1：崇祯皇帝个人属性
+EmperorAttr::EmperorAttr(double initValue, double min, double max)
+    : Attribute(initValue, min, max)
+{
+}
+
+// 派生类2：大明国家属性
+CountryAttr::CountryAttr(double initValue, double min, double max)
+    : Attribute(initValue, min, max)
+{
+}
+
+// 派生类3：敌对/可控势力属性
+ForceAttr::ForceAttr(double initValue, double min, double max)
+    : Attribute(initValue, min, max)
+{
 }
 
 // 派生类1：皇帝属性重写，检查是否低于0
