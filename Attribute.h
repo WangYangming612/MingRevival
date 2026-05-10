@@ -13,6 +13,7 @@ public:
     virtual void reduceValue(double num); // 减少数值
     virtual bool checkLimit() = 0; // 检查数值是否越界
 
+    virtual void addValueWithBounds(double delta, double minBound, double maxBound);
     double getValue() const;
     void setValue(double value);
     double getMin() const;
@@ -30,6 +31,7 @@ class EmperorAttr : public Attribute
 public:
     EmperorAttr(double initValue = 50, double min = 0, double max = 100);
     bool checkLimit() override;
+    void addValueWithBounds(double delta, double minBound = 0, double maxBound = 100) override;
 };
 
 // 派生类2：大明国家属性
@@ -38,6 +40,7 @@ class CountryAttr : public Attribute
 public:
     CountryAttr(double initValue = 500, double min = 0, double max = 1000);
     bool checkLimit() override;
+    void addValueWithBounds(double delta, double minBound = 0, double maxBound = 1500) override;
 };
 
 // 派生类3：敌对/可控势力属性
@@ -46,6 +49,7 @@ class ForceAttr : public Attribute
 public:
     ForceAttr(double initValue = 1000, double min = 0, double max = 2000);
     bool checkLimit() override;
+    void addValueWithBounds(double delta, double minBound = 0, double maxBound = 3000) override;
 };
 
 #endif // ATTRIBUTE_H

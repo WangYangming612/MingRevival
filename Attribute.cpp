@@ -30,6 +30,14 @@ void Attribute::reduceValue(double num)
     if (m_value > m_max) m_value = m_max;
 }
 
+// 新增：带自定义边界的增加值方法
+void Attribute::addValueWithBounds(double delta, double minBound, double maxBound)
+{
+    double newValue = m_value + delta;
+    if (newValue < minBound) newValue = minBound;
+    if (newValue > maxBound) newValue = maxBound;
+    m_value = newValue;
+}
 // 基类get/set方法，封装属性
 double Attribute::getValue() const
 {
@@ -54,23 +62,44 @@ double Attribute::getMax() const
     return m_max;
 }
 
-// ✅ 修复：添加派生类构造函数实现
 // 派生类1：崇祯皇帝个人属性
 EmperorAttr::EmperorAttr(double initValue, double min, double max)
     : Attribute(initValue, min, max)
 {
 }
-
+// 重写：皇帝属性的带边界增加值方法
+void EmperorAttr::addValueWithBounds(double delta, double minBound, double maxBound)
+{
+    // 使用标准边界：0-100
+    double actualMin = (minBound < 0) ? 0 : minBound;
+    double actualMax = (maxBound > 100) ? 100 : maxBound;
+    Attribute::addValueWithBounds(delta, actualMin, actualMax);
+}
 // 派生类2：大明国家属性
 CountryAttr::CountryAttr(double initValue, double min, double max)
     : Attribute(initValue, min, max)
 {
 }
-
+// 重写：国家属性的带边界增加值方法
+void CountryAttr::addValueWithBounds(double delta, double minBound, double maxBound)
+{
+    // 使用标准边界：0-1500
+    double actualMin = (minBound < 0) ? 0 : minBound;
+    double actualMax = (maxBound > 1500) ? 1500 : maxBound;
+    Attribute::addValueWithBounds(delta, actualMin, actualMax);
+}
 // 派生类3：敌对/可控势力属性
 ForceAttr::ForceAttr(double initValue, double min, double max)
     : Attribute(initValue, min, max)
 {
+}
+// 重写：势力属性的带边界增加值方法
+void ForceAttr::addValueWithBounds(double delta, double minBound, double maxBound)
+{
+    // 使用标准边界：0-3000
+    double actualMin = (minBound < 0) ? 0 : minBound;
+    double actualMax = (maxBound > 3000) ? 3000 : maxBound;
+    Attribute::addValueWithBounds(delta, actualMin, actualMax);
 }
 
 // 派生类1：皇帝属性重写，检查是否低于0
